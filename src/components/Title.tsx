@@ -1,24 +1,31 @@
 import React, { useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
+import { useDispatch } from 'react-redux';
+import { changeCardTitle } from '../features/NotesSlice';
 
 
 type propType = {
-	title: string, 
-	cardId: string
+	title: string;
+	cardId: number;
+	cardIndex: number;
+	
 }
 
-const Title: React.FC<propType> = ({ title, cardId }: propType) => {
+const Title: React.FC<propType> = ({ title, cardId, cardIndex }: propType) => {
 	const [changeTitle, setChangeTitle] = useState<boolean>(false);
-	const [intpuVal, setInputVal] = useState<string>(title);
+	const [inputVal, setInputVal] = useState<string>(title);
+
+	const dispatch = useDispatch();
+
 	const handleShowTitle = () => {
 		setChangeTitle(prev => !prev);
-
+		dispatch(changeCardTitle({ inputVal, cardIndex }))
 	}
 	return (
 		<div className="flex p-1 ">
 			<div className="min-h-[1.8rem]">
 				{
-					changeTitle ? (<TextareaAutosize minRows={1} autoFocus onBlur={handleShowTitle} value={intpuVal} onChange={(e) => setInputVal(e.target.value)} className="outline-0 resize-none w-[15rem] rounded px-1" />)
+					changeTitle ? (<TextareaAutosize minRows={1} autoFocus onBlur={handleShowTitle} value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="outline-0 resize-none w-[15rem] rounded px-1" />)
 						: 
 						(<h1 className="font-bold  cursor-pointer w-[15rem]" onClick={handleShowTitle}>{title}</h1>)
 				}

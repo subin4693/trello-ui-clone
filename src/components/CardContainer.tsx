@@ -1,39 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Card from './Cards';
 import InputBtn from './InputBtn';
-import InputBox from './InputBox';
+import InputCardBox from './InputCardBox';
 import Title from './Title';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-
+type CardType = {
+	listTitle: string,
+	listId: number,
+	cardId: number,
+}
 type propType = {
-	cardItem: {
-		title: string,
-		listId: string,
-		cardId: string,
-	}[],
-	cardId: string
-	cardTitle: string
-	index?: number
+	cardItem: CardType[] | [],
+	cardId: number,
+	cardTitle: string,
+	index: number
 }
 
 
 const CardContainer: React.FC<propType> = ({ cardItem, cardId, cardTitle, index }: propType) => {
-	const [openInput, setOpenInput] = useState<boolean>(false);
+	console.log(cardId);
+	
 	return (
 		<>
 			<div className="mr-4 p-3 my-2 h-[1%] w-[18rem] min-w-[18rem]  bg-purple-300 rounded">
-				<Title title={cardTitle} cardId={cardId} />
+				<Title title={cardTitle} cardId={cardId} cardIndex={index} />
 				{
-					cardItem.map((item, index) => {
-						return <Card key={item.listId} title={item.title} cardId={cardId} index={index} /> 
+					cardItem.map((item, indexx) => {
+						return <Card key={item.listId} title={item.listTitle} cardId={cardId} listId={item.listId} cardIndex={index} index={indexx} /> 
 					})
 				}
-				{openInput ? (
-					<InputBox placeholderTxt="Enter the title for this card..." cardId={cardId} index={index} setOpenInput={setOpenInput} btnTxt="Add card" />
-				) : (
-					<InputBtn btnTxt="Add a card" cardId={cardId} setOpenInput={setOpenInput} />)
-				}
+				
+				<InputCardBox cardId={cardId} index={index} />
 			</div>
 		</>
 	)

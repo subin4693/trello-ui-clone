@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { v4 as uuidv4 } from 'uuid';
 
 type initialStateType = {
 	allCards: 
@@ -40,17 +41,40 @@ const NotesSlice = createSlice({
 			
 			const newCard = {
 				cardTitle: action.payload,
-				cardId: 2000,
+				cardId: uuidv4(),
 				lists: [],
 			}
-			state.allCards.push(newCard);
-			console.log(state.allCards)
+			state.allCards = [...state.allCards, newCard];
+			console.log(newCard)
 
 		},
+
+
+		addNewNote: (state, { payload }) => {
+			const { cardTitle, index } = payload;
+
+			state.allCards[index].lists.push({
+				listTitle: cardTitle,
+				listId: uuidv4(),
+				cardId: uuidv4(),
+			})
+				
+		},
+
+		deleteNote: (state, { payload }) => {
+			const { cardIndex, index, cardId, listId } = payload;
+			console.log(cardIndex)
+			console.log(index);
+			// state.allCards
+			state.allCards[cardIndex].lists.splice(index, 1);
+		},
+
+		changeCardTitle: (state, { payload }) => {
+			const { cardIndex, inputVal } = payload;
+			state.allCards[cardIndex].cardTitle = inputVal
+			console.log(cardIndex);
+		},
 		deleteCard: () => {},
-		changeCardTitle: () => {},
-		addNewNote: () => {},
-		deleteNote: () => {},
 		changeNote: () => {},
 	}
 });

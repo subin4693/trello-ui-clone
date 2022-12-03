@@ -6,10 +6,11 @@ import { addNewCard } from '../features/NotesSlice';
 
 type propType = {
 	setOpenInput: Dispatch<SetStateAction<boolean>>,
-	cardId?: string
+	cardId?: number
+	index?: number 
 }
 
-const InputBox: React.FC<propType> = ({ setOpenInput, cardId }: propType) => {
+const InputBox: React.FC<propType> = ({ setOpenInput, cardId, index }: propType) => {
 	const [title, setTitle] = useState<string>("");
 	const dispatch = useDispatch();
 	
@@ -21,7 +22,7 @@ const InputBox: React.FC<propType> = ({ setOpenInput, cardId }: propType) => {
 		}
 	}
 	return (
-		<div className="bg-purple-300 p-2 max-w-[18rem] rounded mt-2">
+		<div className="bg-purple-300 p-2 max-w-[18rem] rounded mt-2 h-[1%]">
 			<TextareaAutosize className="w-full py-2 px-1  text-gray-900 outline-0 rounded resize-none " 
 				autoFocus
 				minRows={1} 
@@ -29,7 +30,7 @@ const InputBox: React.FC<propType> = ({ setOpenInput, cardId }: propType) => {
 				onBlur={handleClose}
 				onChange={e => setTitle(e.target.value)} 
 			/>
-			<button className="bg-blue-500 px-2 py-1 text-gray rounded text-white" onClick={handleClose}>
+			<button className="bg-blue-500 px-2 py-1 rounded text-white" onClick={handleClose}>
 				Add List
 			</button>
 		</div>
