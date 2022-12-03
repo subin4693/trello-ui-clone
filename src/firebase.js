@@ -5,11 +5,11 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 
-    authDomain: 
+  apiKey:
+    authDomain:
   projectId: 
-    storageBucket: 
-  messagingSenderId: 
+    storageBucket:
+  messagingSenderId:
     appId: 
 };
 
