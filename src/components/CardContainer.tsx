@@ -19,7 +19,7 @@ type propType = {
 
 
 const CardContainer: React.FC<propType> = ({ cardItem, cardId, cardTitle, index }: propType) => {
-	console.log(cardId);
+	// console.log(cardId);
 	
 	return (
 		<>

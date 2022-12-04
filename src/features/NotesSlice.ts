@@ -45,7 +45,7 @@ const NotesSlice = createSlice({
 				lists: [],
 			}
 			state.allCards = [...state.allCards, newCard];
-			console.log(newCard)
+			// console.log(newCard)
 
 		},
 
@@ -63,8 +63,8 @@ const NotesSlice = createSlice({
 
 		deleteNote: (state, { payload }) => {
 			const { cardIndex, index, cardId, listId } = payload;
-			console.log(cardIndex)
-			console.log(index);
+			// console.log(cardIndex)
+			// console.log(index);
 			// state.allCards
 			state.allCards[cardIndex].lists.splice(index, 1);
 		},
@@ -72,10 +72,18 @@ const NotesSlice = createSlice({
 		changeCardTitle: (state, { payload }) => {
 			const { cardIndex, inputVal } = payload;
 			state.allCards[cardIndex].cardTitle = inputVal
-			console.log(cardIndex);
+			// console.log(cardIndex);
 		},
-		deleteCard: () => {},
-		changeNote: () => {},
+		deleteCard: (state, { payload }) => {
+			state.allCards.splice(payload, 1);
+
+		},
+		changeNote: (state, { payload }) => {
+			console.log(payload);
+			const { cardIndex, index, updateText } = payload;
+			// console.ll
+			state.allCards[cardIndex].lists[index].listTitle = updateText;
+		},
 	}
 });
 
