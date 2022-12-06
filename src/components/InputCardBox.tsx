@@ -16,7 +16,7 @@ const InputCardBox: React.FC<PropType> = ({ cardId, index }: PropType) => {
 	const handleClose = () => {
 		setOpenInput(prev => !prev)
 		if (cardTitle) {
-			dispatch(addNewNote({ cardTitle, index }))
+			dispatch(addNewNote({ cardTitle, index, cardId }))
 		}
 		setCardTitle("");
 	}

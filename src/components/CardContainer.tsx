@@ -26,7 +26,7 @@ const CardContainer: React.FC<propType> = ({ cardItem, cardId, cardTitle, index 
 			<div className="mr-4 p-3 my-2 h-[1%] w-[18rem] min-w-[18rem]  bg-purple-300 rounded">
 				<Title title={cardTitle} cardId={cardId} cardIndex={index} />
 				{
-					cardItem.map((item, indexx) => {
+					cardItem?.map((item, indexx) => {
 						return <Card key={item.listId} title={item.listTitle} cardId={cardId} listId={item.listId} cardIndex={index} index={indexx} /> 
 					})
 				}

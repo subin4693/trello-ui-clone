@@ -19,20 +19,19 @@ const Title: React.FC<propType> = ({ title, cardId, cardIndex }: propType) => {
 
 	const handleShowTitle = () => {
 		setChangeTitle(prev => !prev);
-		dispatch(changeCardTitle({ inputVal, cardIndex }))
+		dispatch(changeCardTitle({ inputVal, cardIndex, cardId }))
 	}
 
 	const handleDelete = () => {
-		dispatch(deleteCard(cardIndex));
+		dispatch(deleteCard({ cardIndex, cardId }));
 	}
-
 	return (
 		<div className="flex p-1 ">
 			<div className="min-h-[1.8rem]">
 				{
 					changeTitle ? (<TextareaAutosize minRows={1} autoFocus onBlur={handleShowTitle} value={inputVal} onChange={(e) => setInputVal(e.target.value)} className="outline-0 resize-none w-[15rem] rounded px-1" />)
 						: 
-						(<h1 className="font-bold  cursor-pointer w-[15rem]" onClick={handleShowTitle}>{title}</h1>)
+						(<h1 className="font-bold  cursor-pointer w-[15rem]" onClick={handleShowTitle}>{title && title}</h1>)
 				}
 			</div>
 			<button onClick={handleDelete}>

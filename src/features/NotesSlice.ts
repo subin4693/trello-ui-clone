@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { v4 as uuidv4 } from 'uuid';
+import { doc, setDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 type initialStateType = {
 	allCards: 
@@ -38,27 +40,38 @@ const NotesSlice = createSlice({
 	initialState,
 	reducers: {
 		addNewCard: (state, action) => {
-			
+			const uid = uuidv4();
 			const newCard = {
 				cardTitle: action.payload,
-				cardId: uuidv4(),
+				cardId: uid,
 				lists: [],
 			}
-			state.allCards = [...state.allCards, newCard];
-			// console.log(newCard)
+			// state.allCards = [...state.allCards, newCard];
+			setDoc(doc(db, "cards", uid), {
+				...newCard
+			})
+		},
+
+		deleteCard: (state, { payload }) => {
+			const { cardIndex, cardId } = payload;
+			// console.log(payload)
+			state.allCards.splice(cardIndex, 1);
+			deleteDoc(doc(db, "cards", cardId));
+
 
 		},
 
-
-		addNewNote: (state, { payload }) => {
-			const { cardTitle, index } = payload;
-
-			state.allCards[index].lists.push({
+		addNewNote: (state, { payload }) => {// need to change meny thinks after do all the stuffs
+			const { cardTitle, index, cardId } = payload;
+			const newCard = {
 				listTitle: cardTitle,
 				listId: uuidv4(),
-				cardId: uuidv4(),
-			})
-				
+				cardId: cardId,
+			};
+			// state.allCards[index].lists.push(newCard)
+			const updateItem = doc(db, "cards", cardId);
+			updateDoc(updateItem, { lists: [...state.allCards[index].lists, newCard] })
+
 		},
 
 		deleteNote: (state, { payload }) => {
@@ -66,29 +79,40 @@ const NotesSlice = createSlice({
 			// console.log(cardIndex)
 			// console.log(index);
 			// state.allCards
-			state.allCards[cardIndex].lists.splice(index, 1);
+			// state.allCards[cardIndex].lists.splice(index, 1)
+			const deleteItem = doc(db, "cards", cardId);		
+			updateDoc(deleteItem, { lists: state.allCards[cardIndex].lists.splice(index, 1) })
 		},
 
 		changeCardTitle: (state, { payload }) => {
-			const { cardIndex, inputVal } = payload;
-			state.allCards[cardIndex].cardTitle = inputVal
-			// console.log(cardIndex);
-		},
-		deleteCard: (state, { payload }) => {
-			state.allCards.splice(payload, 1);
+			const { cardIndex, inputVal, cardId } = payload;
+			// state.allCards[cardIndex].cardTitle = inputVal;
+			const changeTitle = doc(db, "cards", cardId);
+			updateDoc(changeTitle, { cardTitle: inputVal })
 
+			console.log("working");
+
+
+			console.log(cardIndex);
 		},
 		changeNote: (state, { payload }) => {
 			console.log(payload);
-			const { cardIndex, index, updateText } = payload;
+			const { cardIndex, index, updateText, cardId } = payload;
 			// console.ll
 			state.allCards[cardIndex].lists[index].listTitle = updateText;
+			const changeNoteTitle = doc(db, "cards", cardId);
+			updateDoc(changeNoteTitle, { lists: state.allCards[cardIndex].lists })
+
 		},
+		setAllCardsFromFb: (state, { payload }) => {
+			// console.log(payload);
+			state.allCards.push(payload);
+		}
 	}
 });
 
 
-export const { addNewCard, deleteCard, changeCardTitle, addNewNote, deleteNote, changeNote } = NotesSlice.actions;
+export const { addNewCard, deleteCard, changeCardTitle, addNewNote, deleteNote, changeNote, setAllCardsFromFb } = NotesSlice.actions;
 export default NotesSlice.reducer; 
 
 

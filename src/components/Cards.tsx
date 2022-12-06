@@ -23,7 +23,7 @@ const Cards: React.FC<cardItem> = ({ title, cardId, index, cardIndex, listId }: 
 	}
 	const handleEdit = () => {
 		setEdit((prev) => !prev);
-		dispatch(changeNote({ cardIndex, index, updateText }));
+		dispatch(changeNote({ cardIndex, index, updateText, cardId }));
 	}
 
 	return (                 
